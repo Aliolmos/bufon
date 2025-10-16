@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Misterio Misterioso</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, #0c0e27 0%, #1a1b3a 30%, #2d1b4e 70%, #3a1b5a 100%);
+            color: #e0e0ff;
+            padding: 20px;
+            font-family: 'Exo 2', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Efectos de partículas futuristas */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(120, 219, 255, 0.6);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(120, 219, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(120, 219, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .card {
+            background: rgba(16, 18, 40, 0.7);
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 
+                0 0 0 1px rgba(120, 219, 255, 0.3),
+                0 0 30px rgba(120, 219, 255, 0.2),
+                inset 0 0 20px rgba(120, 219, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(120, 219, 255, 0.2);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #ff4d8d, 
+                #ff9a3d, 
+                #78dbff, 
+                #9d4dff,
+                transparent);
+            animation: scanline 3s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .card::after {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                #ff4d8d, #ff9a3d, #78dbff, #9d4dff, #ff4d8d);
+            z-index: -1;
+            border-radius: 26px;
+            opacity: 0.5;
+            filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 16px;
+            color: #ffffff;
+            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 
+                0 0 10px rgba(120, 219, 255, 0.7),
+                0 0 20px rgba(120, 219, 255, 0.5),
+                0 0 30px rgba(120, 219, 255, 0.3);
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #78dbff, #9d4dff, transparent);
+            border-radius: 3px;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #a0a8ff;
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(120, 219, 255, 0.5);
+        }
+
+        .envelope-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .envelope {
+            width: 220px;
+            height: 160px;
+            background: linear-gradient(135deg, #1a1b3a 0%, #2d1b4e 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 
+                0 0 20px rgba(120, 219, 255, 0.3),
+                inset 0 0 20px rgba(120, 219, 255, 0.1);
+            transition: all 0.5s ease;
+            border: 1px solid rgba(120, 219, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .envelope::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(120, 219, 255, 0.2) 50%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .envelope:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 
+                0 0 30px rgba(120, 219, 255, 0.5),
+                inset 0 0 30px rgba(120, 219, 255, 0.2);
+        }
+
+        .envelope:hover::before {
+            opacity: 1;
+        }
+
+        .envelope-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .envelope-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #78dbff;
+            text-shadow: 0 0 15px rgba(120, 219, 255, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .envelope-text {
+            color: #e0e0ff;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-shadow: 0 0 10px rgba(120, 219, 255, 0.5);
+        }
+
+        .locks-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .lock {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: rgba(26, 27, 58, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                0 0 15px rgba(120, 219, 255, 0.2),
+                inset 0 0 10px rgba(120, 219, 255, 0.1);
+            color: #78dbff;
+            font-size: 1.5rem;
+            transition: all 0.5s ease;
+            border: 1px solid rgba(120, 219, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lock::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(120, 219, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        .lock.open {
+            background: linear-gradient(135deg, #78dbff, #9d4dff);
+            color: #0c0e27;
+            box-shadow: 0 0 25px rgba(120, 219, 255, 0.7);
+            transform: scale(1.1);
+        }
+
+        .lock.open::before {
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .lock.locked-time {
+            background: rgba(16, 18, 40, 0.6);
+            color: #4a4a8a;
+            box-shadow: 0 0 10px rgba(120, 219, 255, 0.1);
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 12px;
+            background: rgba(26, 27, 58, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 40px 0;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(120, 219, 255, 0.2);
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff4d8d, #ff9a3d, #78dbff, #9d4dff);
+            transition: width 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .screen-title {
+            font-size: 1.8rem;
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(120, 219, 255, 0.5);
+        }
+
+        .hint {
+            color: #a0a8ff;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            max-width: 600px;
+            line-height: 1.7;
+            text-shadow: 0 0 5px rgba(120, 219, 255, 0.3);
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 18px 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(120, 219, 255, 0.3);
+            font-size: 1.1rem;
+            background: rgba(16, 18, 40, 0.7);
+            transition: all 0.4s ease;
+            box-shadow: 
+                inset 0 0 10px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(120, 219, 255, 0.1);
+            color: #e0e0ff;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #78dbff;
+            box-shadow: 
+                inset 0 0 15px rgba(120, 219, 255, 0.2),
+                0 0 25px rgba(120, 219, 255, 0.3);
+        }
+
+        .input-field::placeholder {
+            color: #6a6a9a;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ff4d8d, #ff9a3d, #78dbff);
+            color: #0c0e27;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 0 25px rgba(120, 219, 255, 0.4);
+            transition: all 0.4s ease;
+            margin-top: 15px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 35px rgba(120, 219, 255, 0.6);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: rgba(42, 44, 80, 0.5);
+            color: #6a6a9a;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 0 10px rgba(120, 219, 255, 0.1);
+        }
+
+        .error {
+            color: #ff4d8d;
+            font-weight: 500;
+            display: none;
+            margin-top: 15px;
+            font-size: 1rem;
+            text-shadow: 0 0 10px rgba(255, 77, 141, 0.5);
+        }
+
+        .countdown {
+            background: rgba(26, 27, 58, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+            border: 1px solid rgba(120, 219, 255, 0.3);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(120, 219, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countdown::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4d8d, #ff9a3d, #78dbff, #9d4dff);
+        }
+
+        .countdown-text {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #a0a8ff;
+            text-shadow: 0 0 5px rgba(120, 219, 255, 0.3);
+        }
+
+        .countdown-timer {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #78dbff;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(120, 219, 255, 0.7);
+            letter-spacing: 2px;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            background: rgba(12, 14, 39, 0.9);
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 700px;
+            background: rgba(16, 18, 40, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 
+                0 0 50px rgba(120, 219, 255, 0.3),
+                inset 0 0 30px rgba(120, 219, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(120, 219, 255, 0.3);
+        }
+
+        .modal-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4d8d, #ff9a3d, #78dbff, #9d4dff);
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #78dbff;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            color: #ff4d8d;
+            background: rgba(120, 219, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        .letter {
+            white-space: pre-wrap;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #e0e0ff;
+            margin-top: 25px;
+            text-shadow: 0 0 5px rgba(120, 219, 255, 0.3);
+        }
+
+        .reset-btn {
+            position: fixed;
+            left: 25px;
+            bottom: 25px;
+            background: rgba(16, 18, 40, 0.8);
+            border: 1px solid rgba(120, 219, 255, 0.3);
+            padding: 15px 25px;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(120, 219, 255, 0.2);
+            color: #78dbff;
+            font-weight: 600;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Exo 2', sans-serif;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(120, 219, 255, 0.4);
+            background: rgba(26, 27, 58, 0.9);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #78dbff;
+            font-size: 1rem;
+            text-shadow: 0 0 10px rgba(120, 219, 255, 0.5);
+            letter-spacing: 1px;
+        }
+
+        /* Nuevos estilos para el cronómetro de revelación */
+        .reveal-countdown {
+            background: rgba(26, 27, 58, 0.9);
+            border-radius: 15px;
+            padding: 40px 30px;
+            margin: 25px 0;
+            text-align: center;
+            border: 1px solid rgba(120, 219, 255, 0.5);
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 0 30px rgba(120, 219, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: pulse-glow 2s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 30px rgba(120, 219, 255, 0.3); }
+            100% { box-shadow: 0 0 40px rgba(120, 219, 255, 0.6); }
+        }
+
+        .reveal-countdown::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4d8d, #ff9a3d, #78dbff, #9d4dff);
+        }
+
+        .reveal-countdown-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #ffffff;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(120, 219, 255, 0.7);
+        }
+
+        .reveal-countdown-timer {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #78dbff;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px rgba(120, 219, 255, 0.8);
+            letter-spacing: 4px;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(16, 18, 40, 0.5);
+            border-radius: 15px;
+            border: 1px solid rgba(120, 219, 255, 0.3);
+        }
+
+        .reveal-countdown-message {
+            font-size: 1.2rem;
+            color: #a0a8ff;
+            margin-top: 25px;
+            line-height: 1.6;
+            text-shadow: 0 0 5px rgba(120, 219, 255, 0.3);
+            max-width: 500px;
+        }
+
+        .reveal-countdown-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #78dbff;
+            text-shadow: 0 0 20px rgba(120, 219, 255, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .locks-container {
+                gap: 15px;
+            }
+            
+            .lock {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            
+            .reset-btn {
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 15px;
+            }
+            
+            .envelope {
+                width: 180px;
+                height: 130px;
+            }
+            
+            .envelope-icon {
+                font-size: 2.5rem;
+            }
+            
+            .reveal-countdown-timer {
+                font-size: 2.2rem;
+                letter-spacing: 2px;
+            }
+            
+            .reveal-countdown-title {
+                font-size: 1.5rem;
+            }
+            
+            .reveal-countdown-icon {
+                font-size: 3rem;
+            }
+        }
+
+        /* Efectos de brillo adicionales */
+        .glow {
+            text-shadow: 0 0 10px currentColor;
+        }
+    </style>
+</head>
+<body>
+    <!-- Efectos de fondo -->
+    <div class="grid-lines"></div>
+    <div id="particles"></div>
+
+    <div class="container">
+        <div class="card">
+            <h1>MISTERIO FUTURISTA</h1>
+            <p class="subtitle">Cada pista se revela en su tiempo designado • Sistema de desbloqueo temporal activado</p>
+            
+            <div class="envelope-container">
+                <div class="envelope">
+                    <div class="envelope-content">
+                        <div class="envelope-icon">🔮</div>
+                        <div class="envelope-text"><span id="locks-left">5</span> SECRETOS RESTANTES</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="locks-container">
+                <div class="lock" id="vis-lock-0"><i class="fas fa-lock"></i></div>
+                <div class="lock" id="vis-lock-1"><i class="fas fa-lock"></i></div>
+                <div class="lock" id="vis-lock-2"><i class="fas fa-lock"></i></div>
+                <div class="lock" id="vis-lock-3"><i class="fas fa-lock"></i></div>
+                <div class="lock" id="vis-lock-4"><i class="fas fa-lock"></i></div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progress"></div>
+            </div>
+            
+            <!-- Screens -->
+            <div id="screen-0" class="screen active">
+                <div class="screen-title">PISTA 01 • LUGAR FAVORITO</div>
+                <p class="hint">Esta pista te la di hoy 15/10, espero que te la acuerdes...</p>
+                <div class="input-container">
+                    <input id="ans-0" class="input-field" placeholder="¿Dónde encontraste la nota?">
+                    <div class="error" id="err-0">ERROR: Respuesta incorrecta. Intente nuevamente.</div>
+                </div>
+                <button class="btn" id="btn-0" onclick="checkAnswer(0)">VERIFICAR</button>
+            </div>
+            
+            <div id="screen-1" class="screen">
+                <div class="screen-title">PISTA 02 • ATENCIÓN AL DETALLE</div>
+                <p class="hint">Si prestaste atención, sabés qué tengo adentro de mi computadora…</p>
+                <div class="input-container">
+                    <input id="ans-1" class="input-field" placeholder="¿Qué hay adentro? (una palabra)">
+                    <div class="error" id="err-1">ERROR: Datos incorrectos. Revise la información.</div>
+                </div>
+                <button class="btn" id="btn-1" onclick="checkAnswer(1)">VERIFICAR</button>
+            </div>
+            
+            <div id="screen-2" class="screen">
+                <div class="screen-title">PISTA 03 • PENSAMIENTO MATEMATICO</div>
+                <p class="hint">¿Cuál es el valor del ángulo y del siguiente triángulo si se sabe que los lados a, b y c miden 6, 8 y 12 cm respectivamente?</p>
+                <div class="input-container">
+                    <input id="ans-2" class="input-field" placeholder="Número">
+                    <div class="error" id="err-2">ERROR: Cálculo incorrecto. Recalibre.</div>
+                </div>
+                <button class="btn" id="btn-2" onclick="checkAnswer(2)">VERIFICAR</button>
+            </div>
+            
+            <div id="screen-3" class="screen">
+                <div class="screen-title">PISTA 04 • HERRAMIENTA ESENCIAL</div>
+                <p class="hint">Una palabra que sentimos y entendemos solo nosotros.</p>
+                <div class="input-container">
+                    <input id="ans-3" class="input-field" placeholder="¿Qué es? (una palabra)">
+                    <div class="error" id="err-3">ERROR: Identificación fallida. Reintente.</div>
+                </div>
+                <button class="btn" id="btn-3" onclick="checkAnswer(3)">VERIFICAR</button>
+                <p class="hint" style="margin-top: 25px;">DATOS ADICIONALES: STITCH suma letras = 79 • No esencial para el progreso</p>
+            </div>
+            
+            <div id="screen-4" class="screen">
+                <div class="screen-title">PISTA 05 • CÓDIGO FINAL</div>
+                <p class="hint">Cuantas paginas tenia el librito que te supe regalar?.</p>
+                <div class="input-container">
+                    <input id="ans-4" class="input-field" placeholder="Ingresá el código (solo números)">
+                    <div class="error" id="err-4">ERROR: Código no coincide. Verifique nuevamente.</div>
+                </div>
+                <button class="btn" id="btn-4" onclick="checkAnswer(4)">DESBLOQUEAR FINAL</button>
+            </div>
+            
+            <!-- Nuevo screen para el cronómetro de revelación -->
+            <div id="screen-reveal" class="screen">
+                <div class="reveal-countdown">
+                    <div class="reveal-countdown-icon">⏳</div>
+                    <div class="reveal-countdown-title">PRÓXIMA PISTA EN DESBLOQUEO</div>
+                    <div class="reveal-countdown-timer" id="reveal-timer">00:00:00:00</div>
+                    <div class="reveal-countdown-message">
+                        La siguiente pista se está preparando para su revelación.<br>
+                        El sistema está sincronizando los datos necesarios.<br>
+                        Regresa cuando el temporizador llegue a cero.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">SISTEMA DE MISTERIO ACTIVADO • V2.4.11 • HECHO CON TECNOLOGÍA FUTURISTA</div>
+        </div>
+    </div>
+
+    <!-- Modal carta final -->
+    <div class="modal" id="modal">
+        <div class="modal-card">
+            <button class="close-btn" id="close-modal" title="Cerrar">✕</button>
+            <h2 style="margin-bottom: 15px; color: #ffffff; font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px;">COMUNICACIÓN FINAL • MISTERIO FUTURISTA</h2>
+            <div class="letter" id="letter"></div>
+        </div>
+    </div>
+
+    <!-- Reset -->
+    <button class="reset-btn" id="resetBtn" title="Reiniciar sistema"><i class="fas fa-redo"></i> REINICIAR SISTEMA</button>
+
+    <script>
+        // Estado
+        const totalLocks = 5;
+        let unlocked = 0;
+        
+        // Fechas de desbloqueo para cada pista
+        const unlockDates = [
+            new Date('2025-10-14'),  // Pista 1
+            new Date('2025-11-05'),  // Pista 2
+            new Date('2025-11-10'),  // Pista 3
+            new Date('2025-11-15'),  // Pista 4
+            new Date('2025-11-29')   // Pista 5
+        ];
+
+        // Respuestas esperadas (normalizadas)
+        const answers = [
+            ['gimnasio','el gimnasio','gym','el gym'],//lock 0
+            ['Goku', 'goku' ],// lock 1
+            ['117.28','117.2'],// lock 2
+            ['piwkenyeyu', 'Piwkenyeyu'],// lock 3
+            // lock 4 is final numeric code = 27 (las páginas del librito)
+        ];
+        const finalCode = '27';
+
+        // DOM
+        const screens = [
+            document.getElementById('screen-0'),
+            document.getElementById('screen-1'),
+            document.getElementById('screen-2'),
+            document.getElementById('screen-3'),
+            document.getElementById('screen-4'),
+            document.getElementById('screen-reveal')
+        ];
+        const errs = [
+            document.getElementById('err-0'),
+            document.getElementById('err-1'),
+            document.getElementById('err-2'),
+            document.getElementById('err-3'),
+            document.getElementById('err-4')
+        ];
+        const buttons = [
+            document.getElementById('btn-0'),
+            document.getElementById('btn-1'),
+            document.getElementById('btn-2'),
+            document.getElementById('btn-3'),
+            document.getElementById('btn-4')
+        ];
+        const progress = document.getElementById('progress');
+        const locksVis = [
+            document.getElementById('vis-lock-0'),
+            document.getElementById('vis-lock-1'),
+            document.getElementById('vis-lock-2'),
+            document.getElementById('vis-lock-3'),
+            document.getElementById('vis-lock-4')
+        ];
+        const locksLeft = document.getElementById('locks-left');
+        const revealTimer = document.getElementById('reveal-timer');
+
+        // Variables para el cronómetro de revelación
+        let revealInterval = null;
+        let nextUnlockTime = null;
+
+        // Inicial
+        window.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            loadProgress();
+            checkUnlockDates();
+            showScreen(unlocked);
+            document.getElementById('close-modal').addEventListener('click', closeModal);
+            document.getElementById('resetBtn').addEventListener('click', resetGame);
+            updateVisuals();
+            
+            // Actualizar contadores cada segundo
+            setInterval(checkUnlockDates, 1000);
+        });
+
+        // Crear partículas para el fondo
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 4 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posición inicial aleatoria
+                particle.style.left = `${Math.random() * 100}vw`;
+                
+                // Duración de animación aleatoria
+                const duration = Math.random() * 20 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Retraso aleatorio
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                // Color aleatorio entre azules y púrpuras
+                const colors = ['#78dbff', '#9d4dff', '#a0a8ff', '#6a6a9a'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.background = color;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Verificar fechas de desbloqueo
+        function checkUnlockDates() {
+            const now = new Date();
+            
+            for (let i = 0; i < totalLocks; i++) {
+                if (now >= unlockDates[i]) {
+                    // Esta pista ya está disponible
+                    if (locksVis[i].classList.contains('locked-time')) {
+                        locksVis[i].classList.remove('locked-time');
+                    }
+                    
+                    if (i === unlocked) {
+                        buttons[i].disabled = false;
+                    }
+                } else {
+                    // Esta pista aún no está disponible
+                    locksVis[i].classList.add('locked-time');
+                    
+                    if (i === unlocked) {
+                        buttons[i].disabled = true;
+                        
+                        // Mostrar cuenta regresiva si es la pista actual
+                        showCountdown(i, unlockDates[i], now);
+                    }
+                }
+            }
+            
+            // Actualizar cronómetro de revelación si está activo
+            if (revealInterval && nextUnlockTime) {
+                updateRevealTimer(nextUnlockTime, now);
+            }
+        }
+        
+        // Mostrar cuenta regresiva para pista bloqueada por tiempo
+        function showCountdown(index, unlockDate, now) {
+            const timeLeft = unlockDate - now;
+            
+            if (timeLeft > 0) {
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                // Crear o actualizar elemento de cuenta regresiva
+                let countdownEl = document.getElementById(`countdown-${index}`);
+                if (!countdownEl) {
+                    countdownEl = document.createElement('div');
+                    countdownEl.id = `countdown-${index}`;
+                    countdownEl.className = 'countdown';
+                    screens[index].insertBefore(countdownEl, screens[index].firstChild.nextSibling);
+                }
+                
+                countdownEl.innerHTML = `
+                    <div class="countdown-text">PRÓXIMA PISTA DISPONIBLE EN:</div>
+                    <div class="countdown-timer">${days}D ${hours}H ${minutes}M ${seconds}S</div>
+                `;
+            }
+        }
+
+        function normalize(str){
+            return str.trim().toLowerCase().replace(/\s+/g,' ');
+        }
+
+        function checkAnswer(index){
+            const input = document.getElementById(`ans-${index}`);
+            const val = normalize(input.value || '');
+
+            // Verificar si la pista está disponible por fecha
+            const now = new Date();
+            if (now < unlockDates[index]) {
+                showToast("SISTEMA: Pista no disponible. Espere la fecha designada.");
+                return;
+            }
+
+            // lock 4 is final numeric code
+            if(index === 4){
+                if(val === finalCode){
+                    errs[4].style.display = 'none';
+                    unlockNext(4);
+                } else {
+                    errs[4].style.display = 'block';
+                }
+                return;
+            }
+
+            // compare against accepted answers
+            const accepted = answers[index] || [];
+            if(accepted.some(a => normalize(a) === val)){
+                errs[index].style.display = 'none';
+                unlockNext(index);
+            } else {
+                errs[index].style.display = 'block';
+            }
+        }
+
+        function unlockNext(index){
+            // unlock this index and move to next
+            unlocked = Math.max(unlocked, index + 1);
+            saveProgress();
+            updateVisuals();
+
+            // messages por pantalla (chusma y tono romántico/humor)
+            let msg = '';
+            switch(index){
+                case 0:
+                    msg = "✓ PISTA 01 VERIFICADA: Gimnasio localizado. Proceda a la siguiente fase.";
+                    break;
+                case 1:
+                    msg = "✓ PISTA 02 VERIFICADA: Goku detectado en sistema. Continuando análisis.";
+                    break;
+                case 2:
+                    msg = "✓ PISTA 03 VERIFICADA: 6 instrumentos confirmados. Sincronización musical estable.";
+                    break;
+                case 3:
+                    msg = "✓ PISTA 04 VERIFICADA: Calculadora desbloqueada. (Dato adicional: STITCH = 79)";
+                    break;
+                case 4:
+                    msg = "✓ PISTA 05 VERIFICADA: Código final aceptado. Preparando comunicación final.";
+                    break;
+            }
+
+            // show small modal-like toast (simple)
+            showToast(msg);
+
+            // si desbloqueamos el último, mostrar carta
+            if(unlocked >= totalLocks){
+                showFinalLetter();
+            } else {
+                // Verificar si la siguiente pista está disponible
+                const now = new Date();
+                if (now >= unlockDates[unlocked]) {
+                    // Si está disponible, mostrar directamente
+                    showScreen(unlocked);
+                } else {
+                    // Si no está disponible, mostrar cronómetro de revelación
+                    showRevealCountdown(unlocked);
+                }
+            }
+        }
+
+        function showRevealCountdown(nextIndex) {
+            // Establecer el tiempo de desbloqueo
+            nextUnlockTime = unlockDates[nextIndex];
+            
+            // Mostrar pantalla de cronómetro de revelación
+            showScreen(5); // screen-reveal es el índice 5
+            
+            // Iniciar actualización del cronómetro
+            if (revealInterval) {
+                clearInterval(revealInterval);
+            }
+            
+            revealInterval = setInterval(() => {
+                const now = new Date();
+                updateRevealTimer(nextUnlockTime, now);
+                
+                // Si ya es tiempo, mostrar la pista
+                if (now >= nextUnlockTime) {
+                    clearInterval(revealInterval);
+                    revealInterval = null;
+                    showScreen(nextIndex);
+                }
+            }, 1000);
+        }
+        
+        function updateRevealTimer(unlockDate, now) {
+            const timeLeft = unlockDate - now;
+            
+            if (timeLeft > 0) {
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                // Formatear el tiempo para mostrar (DD:HH:MM:SS)
+                const formattedTime = `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                revealTimer.textContent = formattedTime;
+            } else {
+                revealTimer.textContent = "00:00:00:00";
+            }
+        }
+
+        function showScreen(idx){
+            screens.forEach((s,i)=> s.classList.toggle('active', i === idx));
+        }
+
+        function updateVisuals(){
+            const perc = (unlocked / totalLocks) * 100;
+            progress.style.width = perc + '%';
+            locksVis.forEach((el,i)=>{
+                if(i < unlocked){
+                    el.classList.add('open');
+                    el.innerHTML = '<i class="fas fa-unlock"></i>';
+                } else {
+                    el.classList.remove('open');
+                    el.innerHTML = '<i class="fas fa-lock"></i>';
+                }
+            });
+            locksLeft.textContent = Math.max(0, totalLocks - unlocked);
+        }
+
+        function saveProgress(){
+            localStorage.setItem('misterioProgress', String(unlocked));
+        }
+        
+        function loadProgress(){
+            const p = localStorage.getItem('misterioProgress');
+            if(p) unlocked = parseInt(p) || 0;
+            unlocked = Math.min(unlocked, totalLocks);
+        }
+
+        function resetGame(){
+            if(!confirm('¿Reiniciar todo el sistema de misterio? Se perderá todo el progreso.')) return;
+            localStorage.removeItem('misterioProgress');
+            unlocked = 0;
+            // limpiar inputs
+            for(let i=0;i<5;i++){
+                const el = document.getElementById(`ans-${i}`);
+                if(el) el.value = '';
+            }
+            updateVisuals();
+            showScreen(0);
+            showToast('SISTEMA REINICIADO. Iniciando desde el principio...');
+            
+            // Limpiar intervalos
+            if (revealInterval) {
+                clearInterval(revealInterval);
+                revealInterval = null;
+            }
+        }
+
+        function showToast(text){
+            // simple transient message
+            const t = document.createElement('div');
+            t.textContent = text;
+            t.style.position = 'fixed';
+            t.style.bottom = '30px';
+            t.style.right = '30px';
+            t.style.padding = '18px 24px';
+            t.style.background = 'rgba(16, 18, 40, 0.9)';
+            t.style.borderRadius = '12px';
+            t.style.boxShadow = '0 0 30px rgba(120, 219, 255, 0.4)';
+            t.style.zIndex = '9999';
+            t.style.fontWeight = '600';
+            t.style.color = '#78dbff';
+            t.style.border = '1px solid rgba(120, 219, 255, 0.3)';
+            t.style.maxWidth = '400px';
+            t.style.fontFamily = 'Exo 2, sans-serif';
+            t.style.backdropFilter = 'blur(5px)';
+            document.body.appendChild(t);
+            setTimeout(()=> t.style.opacity = '0.01', 3000);
+            setTimeout(()=> t.remove(), 3500);
+        }
+
+        // Carta final con efecto de tipeo
+        const modal = document.getElementById('modal');
+        const letter = document.getElementById('letter');
+
+        const finalText = `🔮 COMUNICACIÓN FINAL ACTIVADA...
+
+Has completado con éxito el Misterio Futurista.
+
+Ahora puedes acceder a la información que había sido programada para revelarse en este momento.
+
+Algunos datos siguen encriptados por seguridad — se desbloquearán automáticamente cuando llegue nuestro primer ciclo anual (el sistema indica alta probabilidad de respuesta emocional en ese punto).
+
+Existen elementos adicionales que permanecerán ocultos hasta el 10 de diciembre, o posiblemente antes si las condiciones lo permiten...
+ciertos eventos deben ocurrir antes de que pueda revelarse información adicional.
+
+Por ahora, disfruta de este fragmento de lo que está por venir.
+
+El sistema ha calculado que mis sentimientos exceden los parámetros de medición estándar.
+
+— Tu misterio favorito, ahora desencriptado.`;
+
+        function showFinalLetter(){
+            // abrir modal y tipear
+            modal.style.display = 'flex';
+            letter.textContent = '';
+            typeText(finalText, letter, 20, () => {
+                // terminado — guardar que llegó al final
+                showToast('COMUNICACIÓN FINAL COMPLETADA. Sistema emocional activado.');
+            });
+        }
+
+        function closeModal(){
+            modal.style.display = 'none';
+        }
+
+        function typeText(text, container, delay = 30, cb){
+            let i = 0;
+            const step = () => {
+                if(i < text.length){
+                    container.textContent += text[i];
+                    i++;
+                    // small pauses for punctuation
+                    let d = delay;
+                    const ch = text[i-1];
+                    if(ch === '.' || ch === '\n') d = delay * 5;
+                    if(ch === ',') d = delay * 2;
+                    setTimeout(step, d);
+                } else {
+                    if(cb) cb();
+                }
+            };
+            step();
+        }
+
+        // small accessibility: allow Enter to submit in active screen
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Enter'){
+                const activeIdx = unlocked < totalLocks ? unlocked : totalLocks - 1;
+                // If last unlocked equals active screen, use that; else if final shown, do nothing
+                const screenEl = screens[activeIdx];
+                if(screenEl && screenEl.classList.contains('active')){
+                    checkAnswer(activeIdx);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
